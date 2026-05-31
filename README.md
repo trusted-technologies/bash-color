@@ -1,0 +1,2 @@
+# bash-color
+bash-color
