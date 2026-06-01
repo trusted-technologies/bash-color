@@ -17,6 +17,19 @@ FF_BIN=$(find /tmp -maxdepth 3 -type f -name fastfetch 2>/dev/null | head -n1)
 rm -f /tmp/ff.tar.gz
 fi
 [ -f ~/.local/bin/fastfetch ] && ! grep -q 'PATH=.local/bin' ~/.bashrc 2>/dev/null && echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+mkdir -p ~/.config/fastfetch
+cat > ~/.config/fastfetch/config.jsonc <<'EOF'
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": { "type": "auto", "padding": { "top": 1, "left": 2 } },
+    "display": { "separator": "  ", "color": { "separator": "blue" } },
+    "modules": [
+        "title", "separator", "os", "host", "kernel", "uptime",
+        "packages", "shell", "de", "wm", "theme", "icons",
+        "terminal", "cpu", "gpu", "memory", "disk", "break", "colors"
+    ]
+}
+EOF
 cat > ~/.bash_colors <<'COLORS'
 export HISTSIZE=100000
 export HISTFILESIZE=200000
