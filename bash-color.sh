@@ -55,7 +55,9 @@ if [[ $- == *i* ]]; then
 if command -v fastfetch >/dev/null 2>&1; then fastfetch; elif command -v neofetch >/dev/null 2>&1; then neofetch; fi
 fi
 COLORS
-grep -q 'bash_colors' ~/.bashrc 2>/dev/null || echo 'if [ -f ~/.bash_colors ]; then source ~/.bash_colors; fi' >> ~/.bashrc
+sed -i '/if.*bash_colors/,/fi/d' ~/.bashrc 2>/dev/null || true
+sed -i '/if.*abashrc/,/fi/d' ~/.bashrc 2>/dev/null || true
+echo 'if [ -f ~/.bash_colors ]; then source ~/.bash_colors; fi' >> ~/.bashrc
 touch ~/.hushlogin 2>/dev/null || true
 [ -d /etc/update-motd.d ] && chmod -x /etc/update-motd.d/* 2>/dev/null || true
 [ -f /etc/ssh/sshd_config ] && { sed -i 's/^#*PrintMotd.*/PrintMotd no/' /etc/ssh/sshd_config 2>/dev/null || true; systemctl restart sshd >/dev/null 2>&1 || service ssh restart >/dev/null 2>&1 || true; }
