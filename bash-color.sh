@@ -1,5 +1,6 @@
 [ -n "${BASH_VERSION:-}" ] || { command -v bash >/dev/null 2>&1 || { echo "bash is required" >&2; exit 1; }; [ -f "$0" ] && exec bash "$0" "$@"; exec bash -c "$(cat)"; }
 echo "==> installing..."
+rm -f /usr/local/bin/fastfetch
 command -v apt-get >/dev/null 2>&1 && { apt-get update -y; apt-get install -y curl grc fastfetch; } || true
 command -v dnf >/dev/null 2>&1 && dnf install -y curl grc fastfetch || true
 command -v yum >/dev/null 2>&1 && yum install -y curl grc fastfetch || true
@@ -15,6 +16,15 @@ tar -xzf /tmp/ff.tar.gz -C /tmp
 FF_BIN=$(find /tmp -maxdepth 3 -type f -name fastfetch 2>/dev/null | head -n1)
 [ -n "$FF_BIN" ] && { install -Dm755 "$FF_BIN" /usr/local/bin/fastfetch 2>/dev/null || { mkdir -p ~/.local/bin; install -Dm755 "$FF_BIN" ~/.local/bin/fastfetch; }; }
 rm -f /tmp/ff.tar.gz
+fi
+if ! command -v fastfetch >/dev/null 2>&1; then
+command -v apt-get >/dev/null 2>&1 && apt-get install -y neofetch || true
+command -v dnf >/dev/null 2>&1 && dnf install -y neofetch || true
+command -v yum >/dev/null 2>&1 && yum install -y neofetch || true
+command -v pacman >/dev/null 2>&1 && pacman -Sy --noconfirm neofetch || true
+command -v apk >/dev/null 2>&1 && apk add --no-cache neofetch || true
+command -v zypper >/dev/null 2>&1 && zypper --non-interactive install neofetch || true
+command -v brew >/dev/null 2>&1 && brew install neofetch || true
 fi
 [ -f ~/.local/bin/fastfetch ] && ! grep -q 'PATH=.local/bin' ~/.bashrc 2>/dev/null && echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 mkdir -p ~/.config/fastfetch
@@ -41,7 +51,9 @@ if ls --color=auto >/dev/null 2>&1; then alias ls='ls --color=auto'; alias ll='l
 alias grep='grep --color=auto'
 if command -v grc >/dev/null 2>&1 && [ "$TERM" != "dumb" ]; then for cmd in ping tail df du free netstat ps ss stat systemctl journalctl; do command -v "$cmd" >/dev/null 2>&1 && alias "$cmd"="grc -es --colour=auto $cmd"; done; fi
 if [ "$(id -u)" -ne 0 ]; then PS1='\[\e[38;5;81m\]\u\[\e[93m\]@\[\e[38;5;42m\]\h\[\e[0m\] \[\e[38;5;32m\]\w\[\e[0m\] \$ '; else PS1='\[\e[91m\]\u\[\e[93m\]@\[\e[38;5;42m\]\h\[\e[0m\] \[\e[38;5;32m\]\w\[\e[0m\] # '; fi
-if [[ $- == *i* ]]; then command -v fastfetch >/dev/null 2>&1 && fastfetch; fi
+if [[ $- == *i* ]]; then
+command -v fastfetch >/dev/null 2>&1 && fastfetch || command -v neofetch >/dev/null 2>&1 && neofetch
+fi
 COLORS
 sed -i 's/^\([[:space:]]*source.*abashrc\)/# \1/' ~/.bashrc 2>/dev/null || true
 sed -i 's/^\([[:space:]]*source.*bash_colors\)/# \1/' ~/.bashrc 2>/dev/null || true
