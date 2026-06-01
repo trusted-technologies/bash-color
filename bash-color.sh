@@ -52,7 +52,7 @@ alias grep='grep --color=auto'
 if command -v grc >/dev/null 2>&1 && [ "$TERM" != "dumb" ]; then for cmd in ping tail df du free netstat ps ss stat systemctl journalctl; do command -v "$cmd" >/dev/null 2>&1 && alias "$cmd"="grc -es --colour=auto $cmd"; done; fi
 if [ "$(id -u)" -ne 0 ]; then PS1='\[\e[38;5;81m\]\u\[\e[93m\]@\[\e[38;5;42m\]\h\[\e[0m\] \[\e[38;5;32m\]\w\[\e[0m\] \$ '; else PS1='\[\e[91m\]\u\[\e[93m\]@\[\e[38;5;42m\]\h\[\e[0m\] \[\e[38;5;32m\]\w\[\e[0m\] # '; fi
 if [[ $- == *i* ]]; then
-command -v fastfetch >/dev/null 2>&1 && fastfetch || command -v neofetch >/dev/null 2>&1 && neofetch
+if command -v fastfetch >/dev/null 2>&1; then fastfetch; elif command -v neofetch >/dev/null 2>&1; then neofetch; fi
 fi
 COLORS
 sed -i 's/^\([[:space:]]*source.*abashrc\)/# \1/' ~/.bashrc 2>/dev/null || true
