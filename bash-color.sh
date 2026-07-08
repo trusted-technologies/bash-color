@@ -36,7 +36,18 @@ cat > ~/.config/fastfetch/config.jsonc <<'EOF'
     "modules": [
         "title", "separator", "os", "host", "kernel", "uptime",
         "packages", "shell", "de", "wm", "theme", "icons",
-        "terminal", "cpu", "gpu", "memory", "disk", "break", "colors"
+        "terminal", "cpu", "gpu", "memory", "disk",
+        {
+            "type": "command",
+            "key": "IPv4",
+            "text": "curl -4 -s --max-time 3 https://api.ipify.org || curl -4 -s --max-time 3 https://ipv4.icanhazip.com || curl -4 -s --max-time 3 https://ifconfig.me"
+        },
+        {
+            "type": "command",
+            "key": "IPv6",
+            "text": "curl -6 -s --max-time 3 https://api6.ipify.org || curl -6 -s --max-time 3 https://ipv6.icanhazip.com || curl -6 -s --max-time 3 https://ifconfig.me"
+        },
+        "break", "colors"
     ]
 }
 EOF
